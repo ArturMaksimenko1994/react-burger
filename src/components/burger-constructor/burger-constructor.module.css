@@ -1,0 +1,26 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.list {
+  composes: group;
+  margin: 0;
+  padding: 0 8px 0 0;
+  list-style-type: none;
+  overflow-y: auto;
+  max-height: 464px;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+}
+
+.list::-webkit-scrollbar {
+  background-color: #2F2F37;
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+

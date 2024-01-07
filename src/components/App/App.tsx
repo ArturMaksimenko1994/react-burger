@@ -1,12 +1,18 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 
-import './App.module.css';
-import appStyles from './App.module.css';
+import AppHeader from '../app-header/app-header';
+import PageBurger from '../page-burger/page-burger';
+
+import style from './app.module.css';
 
 function App() {
+
   return (
-    <div className={appStyles.app}>
-      REACT-BURGER
+    <div className={style.app}>
+      <AppHeader />
+      <main className={`${style.main} pt-10`}>
+        <PageBurger />
+      </main>
     </div>
   );
 }
