@@ -1,4 +1,5 @@
 
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
@@ -9,6 +10,23 @@ import styles from './modal.module.css';
 const modalRoot = document.getElementById("modals");
 
 const Modal = ({ children, title, active, setActive }) => {
+
+  const handleClose = () => {
+    setActive(false);
+  };
+
+  const handleEsc = (event) => {
+    if (event.keyCode === 27) {
+      handleClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEsc, false);
+    return () => {
+      document.removeEventListener('keydown', handleEsc, false);
+    };
+  }, []);
 
   return createPortal(
     (

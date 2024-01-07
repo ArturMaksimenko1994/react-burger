@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { BASE_URL } from './../../utils/api'
 
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 
+
 import style from './page-burger.module.css';
+
 
 const PageBurger = () => {
   const [state, setState] = useState({
@@ -14,7 +17,7 @@ const PageBurger = () => {
 
   const getIngredients = () => {
     setState({ ...state, hasError: false, isLoading: true });
-    fetch('https://norma.nomoreparties.space/api/ingredients')
+    fetch(BASE_URL)
       .then(res => res.json())
       .then(data => {
         setState({ ...state, data: data.data, isLoading: false });
