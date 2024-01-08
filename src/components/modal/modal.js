@@ -15,16 +15,16 @@ const Modal = ({ children, title, active, setActive }) => {
     setActive(false);
   };
 
-  const handleEsc = (event) => {
-    if (event.keyCode === 27) {
+  const checkEsc = (event) => {
+    if (event.key === 'Escape') {
       handleClose();
     }
   };
 
   useEffect(() => {
-    document.addEventListener('keydown', handleEsc, false);
+    document.addEventListener('keydown', checkEsc, false);
     return () => {
-      document.removeEventListener('keydown', handleEsc, false);
+      document.removeEventListener('keydown', checkEsc, false);
     };
   }, []);
 

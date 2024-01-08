@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-
 import AppHeader from '../app-header/app-header';
 import PageBurger from '../page-burger/page-burger';
 

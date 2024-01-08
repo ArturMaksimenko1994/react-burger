@@ -18,13 +18,19 @@ const PageBurger = () => {
   const getIngredients = () => {
     setState({ ...state, hasError: false, isLoading: true });
     fetch(BASE_URL)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Проблема с fetch запросом');
+        }
+        return res.json();
+      })
       .then(data => {
         setState({ ...state, data: data.data, isLoading: false });
         // console.log('Данные с API:', data.data); // Вывод данных API в консоль
       })
-      .catch(e => {
+      .catch(error => {
         setState({ ...state, hasError: true, isLoading: false });
+        console.error('Произошла проблема при выполнении запроса:', error);
       });
   };
 
