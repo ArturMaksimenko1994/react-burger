@@ -23,5 +23,4 @@ BurgerConstructorItem.propTypes = {
     image: PropTypes.string.isRequired
   }).isRequired,
 };
-
 export default BurgerConstructorItem;
