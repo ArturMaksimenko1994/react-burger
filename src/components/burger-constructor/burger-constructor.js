@@ -1,10 +1,13 @@
 import React, { useContext, useState, useMemo } from "react";
+
 import PropTypes from "prop-types";
 import style from "./burger-constructor.module.css";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerConatructorCounting from "../burger-conatructor-counting/burger-conatructor-counting";
 import { DataIngredientsContext } from "../../services/appContext";
+
+import {createOrder} from "../../services/api"
 
 const BurgerConstructor = () => {
   const { products } = useContext(DataIngredientsContext);
@@ -31,37 +34,15 @@ const BurgerConstructor = () => {
   // Мемоизируем результат для оптимизации производительности
   const totalPrice = useMemo(calculateTotalPrice, [buns, otherIngredients]);
 
-  // Функция для отправки запроса на создание заказа
-  const createOrder = async (ingredients) => {
-    try {
-      const response = await fetch("https://norma.nomoreparties.space/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ingredients }),
-      });
-      if (!response.ok) {
-        throw new Error("Ошибка при создании заказа");
-      }
-      const data = await response.json();
-      setOrderNumber(data.order.number);
-    } catch (error) {
-      console.error("Ошибка:", error);
-      // Обработка ошибок, например, вывод сообщения об ошибке пользователю
-    }
-  };
-
   // Обработчик нажатия кнопки "Оформить заказ"
   const handleOrderButtonClick = () => {
     // Получаем список ингредиентов из компонента BurgerConstructor
     const ingredients = products?.items.map((item) => item._id);
     // Вызываем функцию для создания заказа
     if (ingredients && ingredients.length > 0) {
-      createOrder(ingredients);
+      createOrder(ingredients, setOrderNumber);
     } else {
       console.error("Невозможно создать заказ: отсутствуют ингредиенты");
-      // Вывод сообщения об ошибке пользователю
     }
   };
 
