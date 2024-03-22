@@ -9,7 +9,7 @@ const BurgerIngredientsAll = ({ type, items, openModal }) => {
     <div className={`${style['group-ingredients']}`}>
       <h2 className="text text_type_main-medium">{type}</h2>
       <ul className={`${style['list']}`}>
-        {items.map((item) => (
+        {items?.map((item) => (
           <BurgerIngridientItem key={item._id} data={item} openModal={openModal} />
         ))}
       </ul>

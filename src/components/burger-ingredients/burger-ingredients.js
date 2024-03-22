@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal';
@@ -6,15 +6,18 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import BurgerIngredientsTabs from '../burger-ingredients-tabs/burger-ingredients-tabs';
 import BurgerIngredientsAll from "./../burger-ingredients-all/burger-ingredients-all"
 import style from './burger-ingredients.module.css';
+import {getIngredients} from "../../services/api";
+import {DataIngredientsContext} from "../../services/appContext";
 
-const BurgerIngredients = ({ data }) => {
+const BurgerIngredients = () => {
+
+  const {products} = useContext(DataIngredientsContext);
 
   const [current, setCurrent] = useState('one');
 
-  const filteredBuns = data.filter(item => item.type === "bun");
-  const filteredSauces = data.filter(item => item.type === "sauce");
-  const filteredFillings = data.filter(item => item.type === "main");
-
+  const filteredBuns = products?.items.filter(item => item.type === "bun");
+  const filteredSauces = products?.items.filter(item => item.type === "sauce");
+  const filteredFillings = products?.items.filter(item => item.type === "main");
 
   const [selectedIngredient, setSelectedIngredient] = useState(null);
   const [modalIngredientDetails, setModalIngredientDetails] = useState(false);
@@ -43,9 +46,5 @@ const BurgerIngredients = ({ data }) => {
     </div>
   )
 }
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
 
 export default BurgerIngredients;
