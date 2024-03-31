@@ -3,14 +3,21 @@ import BurgerIngridientItem from "./../burger-ingredients-item/burger-ingredient
 
 import style from './burger-ingredients-all.module.css';
 
-const BurgerIngredientsAll = ({ type, items, openModal }) => {
+const BurgerIngredientsAll = ({ type, ingredients }) => {
+
+  const category = ingredients.filter((elem) => elem.type === type);
+  const categories = {
+    'bun': 'Булки',
+    'sauce': 'Соусы',
+    'main': 'Начинки'
+  };
 
   return (
-    <div className={`${style['group-ingredients']}`}>
-      <h2 className="text text_type_main-medium">{type}</h2>
+    <div className={`${style['group-ingredients']}`} id={type}>
+      <h2 className="text text_type_main-medium">{categories[type]}</h2>
       <ul className={`${style['list']}`}>
-        {items?.map((item) => (
-          <BurgerIngridientItem key={item._id} data={item} openModal={openModal} />
+        {category?.map((elem) => (
+          <BurgerIngridientItem key={elem._id} ingredient={elem} />
         ))}
       </ul>
     </div>
@@ -19,8 +26,7 @@ const BurgerIngredientsAll = ({ type, items, openModal }) => {
 
 BurgerIngredientsAll.propTypes = {
   type: PropTypes.string.isRequired,
-  items: PropTypes.array.isRequired,
-  openModal: PropTypes.func.isRequired,
+  ingredients: PropTypes.array.isRequired,
 };
 
 export default BurgerIngredientsAll;

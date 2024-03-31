@@ -3,3 +3,7 @@
   align-items: center;
   gap: 8px;
 }
+
+.list-item + .list-item {
+  margin-top: 16px;
+}

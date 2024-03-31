@@ -1,50 +1,93 @@
-import {useContext, useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useInView} from 'react-intersection-observer';
 
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import BurgerIngredientsTabs from '../burger-ingredients-tabs/burger-ingredients-tabs';
-import BurgerIngredientsAll from "./../burger-ingredients-all/burger-ingredients-all"
+import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
+import BurgerIngredientsAll from "./../burger-ingredients-all/burger-ingredients-all";
+import {getBurgerIngredients} from '../../services/store/reducers/burger-ingredients';
 import style from './burger-ingredients.module.css';
-import {getIngredients} from "../../services/api";
-import {DataIngredientsContext} from "../../services/appContext";
 
 const BurgerIngredients = () => {
 
-  const {products} = useContext(DataIngredientsContext);
+  const dispatch = useDispatch();
+  const ingredients = useSelector(store => store.burgerIngredientsReducer.ingredients)
+
+  useEffect(() => {
+    dispatch(getBurgerIngredients());
+  }, [dispatch]);
 
   const [current, setCurrent] = useState('one');
 
-  const filteredBuns = products?.items.filter(item => item.type === "bun");
-  const filteredSauces = products?.items.filter(item => item.type === "sauce");
-  const filteredFillings = products?.items.filter(item => item.type === "main");
+  //Доработка интерфейса навигации по ингредиентам плагин react-intersection-observer
+  const [bunRef, bunInView] = useInView({
+    threshold: 0.1
+  });
+  const [sauceRef, sauceInView] = useInView({
+    threshold: 0.1
+  });
+  const [mainRef, mainInView] = useInView({
+    threshold: 0.1
+  });
 
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
-  const [modalIngredientDetails, setModalIngredientDetails] = useState(false);
-
-  const openModal = (data) => {
-    setSelectedIngredient(data);
-    setModalIngredientDetails(true);
+  const handleIngredientScroll = () => {
+    switch (true) {
+      case bunInView:
+        setCurrent('bun');
+        break;
+      case sauceInView:
+        setCurrent('sauce');
+        break;
+      case mainInView:
+        setCurrent('main');
+        break;
+      default:
+        break;
+    }
   };
+
+  useEffect(() => {
+    handleIngredientScroll();
+  }, [bunInView, sauceInView, mainInView]);
 
   return (
     <div className="mt-5">
-      <BurgerIngredientsTabs current={current} setCurrent={setCurrent} />
-      <div className="mt-5">
-        <div className={`${style['all-ingredients']} mt-10`}>
-          <BurgerIngredientsAll type="Булки" items={filteredBuns} openModal={openModal} />
-          <BurgerIngredientsAll type="Соусы" items={filteredSauces} openModal={openModal} />
-          <BurgerIngredientsAll type="Начинки" items={filteredFillings} openModal={openModal} />
-        </div>
+
+      <div className={`${style.tab} pt-5`}>
+        <a href='#bun' className={style.link}>
+          <Tab value="bun" active={current === "bun"}>Булки</Tab>
+        </a>
+        <a href='#sauce' className={style.link}>
+          <Tab value="sauce" active={current === "sauce"}>Соусы</Tab>
+        </a>
+        <a href='#main' className={style.link}>
+          <Tab value="main" active={current === "main"}>Начинки</Tab>
+        </a>
       </div>
 
-      <Modal active={modalIngredientDetails} setActive={setModalIngredientDetails} title="Детали ингредиента">
-        {selectedIngredient && (
-          <IngredientDetails data={selectedIngredient} />
-        )}
-      </Modal>
+      <div className="mt-10">
+        <div className={`${style['all-ingredients']}`}>
+          <div ref={bunRef}>
+            <BurgerIngredientsAll
+              type="bun"
+              ingredients={ingredients}
+            />
+          </div>
+          <div ref={sauceRef}>
+            <BurgerIngredientsAll
+              type="sauce"
+              ingredients={ingredients}
+            />
+          </div>
+          <div ref={mainRef}>
+            <BurgerIngredientsAll
+              type="main"
+              ingredients={ingredients}
+            />
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default BurgerIngredients;
