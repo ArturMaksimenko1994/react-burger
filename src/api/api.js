@@ -2,12 +2,7 @@ import {BASE_URL} from "./api-сonfig";
 
 export const getIngredientsData = () => {
   return fetch(`${BASE_URL}/ingredients`)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Проблема с fetch запросом');
-      }
-      return res.json();
-    })
+    .then(checkResponse)
     .catch(error => {
       console.error('Произошла проблема при выполнении запроса:', error);
       throw error; // Перебрасываем ошибку для дальнейшей обработки
@@ -32,6 +27,7 @@ const checkResponse = (response) => {
   if (!response.ok) {
     throw new Error("Произошла ошибка при выполнении запроса.");
   }
-  console.log(response)
-  return response.json();
+  const data = response.json();
+  console.log("Данные из API:", data); // Выводим данные в консоль
+  return data;
 };

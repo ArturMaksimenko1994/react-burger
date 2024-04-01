@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import BurgerIngridientItem from "./../burger-ingredients-item/burger-ingredients-item"
+import BurgerIngridientItem from "../burger-ingredients-item/burger-ingredients-item"
 
 import style from './burger-ingredients-all.module.css';
 

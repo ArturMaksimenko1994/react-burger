@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import style from './burger-ingredients-item.module.css';
 
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
-import {openIngredientModal} from "../../services/store/actions/ingredient-details";
-import {constructorReducer} from "../../services/store/reducers/burger-constructor";
+import {openIngredientModal} from "../../../services/store/actions/ingredient-details";
 import {useMemo} from "react";
 
 const BurgerIngridientItem = ({ingredient}) => {

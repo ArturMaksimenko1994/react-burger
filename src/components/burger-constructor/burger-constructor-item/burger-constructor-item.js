@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import style from "./burger-constructor-item.module.css"
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components'
-import {DELETE_ITEM, MOVE_ITEM} from "../../services/store/actions/burger-constructor";
+import {DELETE_ITEM, MOVE_ITEM} from "../../../services/store/actions/burger-constructor";
 import {useDispatch} from "react-redux";
 import {useRef} from "react";
 import {useDrag, useDrop} from "react-dnd";
@@ -46,6 +46,7 @@ const BurgerConstructorItem = ({index, items}) => {
   });
 
   drag(drop(ref));
+
   return (
     <li className={`${style['list-item']}`}
         style={{ opacity }} ref={ref}

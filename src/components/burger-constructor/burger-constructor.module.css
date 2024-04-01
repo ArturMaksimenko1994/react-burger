@@ -1,14 +1,14 @@
 .group {
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*gap: 16px;*/
-  /*align-items: flex-end;*/
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
 }
 
 .list {
   composes: group;
-  margin: 16px 0;
-  padding: 0 8px 0 0;
+  margin: 0;
+  padding: 0 16px 0 0;
   list-style-type: none;
   overflow-y: auto;
   min-height: 464px;
@@ -38,6 +38,11 @@
   max-width: 535px;
   min-height: 80px;
   width: 100%;
+  margin-right: 16px;
+}
+
+.bun-constructor-element {
+  margin-right: 16px;
 }
 
 .bun-top {
@@ -49,7 +54,7 @@
 }
 
 .empty-list {
-  margin: 16px 0;
+  margin: 0 16px 0 0;
   display: flex;
   align-content: center;
   justify-content: center;

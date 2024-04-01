@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import PropTypes from 'prop-types';
 import style from './burger-conatructor-counting.module.css';
 
 const BurgerConatructorCounting = ({total, itemsId, orderDetailsModal}) => {
@@ -22,5 +22,12 @@ const BurgerConatructorCounting = ({total, itemsId, orderDetailsModal}) => {
     </>
   );
 }
+
+// Определяем propTypes для компонента
+BurgerConatructorCounting.propTypes = {
+  total: PropTypes.number.isRequired,
+  itemsId: PropTypes.array.isRequired,
+  orderDetailsModal: PropTypes.func.isRequired,
+};
 
 export default BurgerConatructorCounting;

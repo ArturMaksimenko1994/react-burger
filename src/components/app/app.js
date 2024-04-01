@@ -15,7 +15,6 @@ import {RESET_ITEM} from "../../services/store/actions/burger-constructor";
 function App() {
   const dispatch = useDispatch();
   const openIngredientDetailsModal = useSelector(store => store.ingredientReducer.openModal);
-
   const orderNumber = useSelector(store => store.orderReducer.number);
 
   const handleCloseIngredientDetailsModal = useCallback(() => {
@@ -30,6 +29,7 @@ function App() {
   return (
     <div className={style.app}>
       <AppHeader/>
+
       <main className={`${style.main} pt-10`}>
         <PageBurger/>
       </main>
