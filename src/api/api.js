@@ -3,10 +3,6 @@ import {BASE_URL} from "./api-сonfig";
 export const getIngredientsData = () => {
   return fetch(`${BASE_URL}/ingredients`)
     .then(checkResponse)
-    .catch(error => {
-      console.error('Произошла проблема при выполнении запроса:', error);
-      throw error; // Перебрасываем ошибку для дальнейшей обработки
-    });
 };
 
 export const orderDetailsRequest = async (productsId) => {
