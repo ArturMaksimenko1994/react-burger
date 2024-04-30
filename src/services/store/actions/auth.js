@@ -7,9 +7,9 @@ import {
   updateUserRequest,
   resgisterUserRequest,
   updateTokenRequest
-} from "../../components/api/api";
+} from "../../../api/api";
 
-import { deleteCookie, setCookie } from "../../utils/utils";
+import { deleteCookie, setCookie } from "../../../utils/utils";
 
 export const REGISTER_FORM_SET_VALUE = 'REGISTER_FORM_SET_VALUE';
 export const REGISTER_FORM_REQUEST = 'REGISTER_FORM_REQUEST';

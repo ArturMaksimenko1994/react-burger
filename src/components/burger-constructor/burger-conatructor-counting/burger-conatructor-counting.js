@@ -3,7 +3,7 @@ import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-co
 import PropTypes from 'prop-types';
 import style from './burger-conatructor-counting.module.css';
 
-const BurgerConatructorCounting = ({total, itemsId, orderDetailsModal}) => {
+const BurgerConatructorCounting = ({items, total, itemsId, orderDetailsModal}) => {
 
   return (
     <>
@@ -12,11 +12,23 @@ const BurgerConatructorCounting = ({total, itemsId, orderDetailsModal}) => {
           <span className="text text_type_digits-medium">{total}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button
-          onClick={() => { orderDetailsModal(itemsId) }}
-          htmlType="button" type="primary" size="large">
-          Оформить заказ
-        </Button>
+        {items.length === 0
+          ? (<Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            disabled
+          >
+            Оформить заказ
+          </Button>)
+          : (<Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={() => { orderDetailsModal(itemsId) }}
+          >
+            Оформить заказ
+          </Button>)}
       </div>
 
     </>

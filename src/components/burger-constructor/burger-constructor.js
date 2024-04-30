@@ -9,11 +9,16 @@ import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-compon
 import BurgerConatructorCounting from './burger-conatructor-counting/burger-conatructor-counting';
 import {getOrderDetails} from "../../services/store/actions/order-details";
 import {ADD_BUN, ADD_ITEM_CONSTRUCTOR} from "../../services/store/actions/burger-constructor";
+import {getCookie} from "../../utils/utils";
+import {useNavigate} from 'react-router-dom';
 
 const BurgerConstructor = () => {
   const {bun, items} = useSelector((state) => state.constructorReducer);
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
+
+  const cookie = getCookie('token');
+  const history = useNavigate();
 
   const filling = useMemo(
     () => items.filter((item) => item.type !== 'bun'),
@@ -30,8 +35,9 @@ const BurgerConstructor = () => {
     [items]
   );
 
-  const orderDetailsModal = (productsId) => {
-    dispatch(getOrderDetails(itemsId));
+  const orderDetailsModal = (itemsId) => {
+    cookie && dispatch(getOrderDetails(itemsId));
+    !cookie && history('/login');
   };
 
   const [, dropTarget] = useDrop({
@@ -104,7 +110,7 @@ const BurgerConstructor = () => {
         )}
 
       </div>
-      <BurgerConatructorCounting total={total} itemsId={itemsId} orderDetailsModal={orderDetailsModal}/>
+      <BurgerConatructorCounting items={items} total={total} itemsId={itemsId} orderDetailsModal={orderDetailsModal}/>
     </div>
   );
 };

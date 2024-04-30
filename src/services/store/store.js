@@ -5,6 +5,7 @@ import {burgerIngredientsReducer} from "./reducers/burger-ingredients";
 import {ingredientReducer} from "./reducers/ingredient-details";
 import {constructorReducer} from "./reducers/burger-constructor";
 import {orderReducer} from "./reducers/order-details";
+import {authReducer} from "./reducers/auth";
 
 // declare global {
 //   interface Window {
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   burgerIngredientsReducer,
   ingredientReducer,
   constructorReducer,
-  orderReducer
+  orderReducer,
+  authReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

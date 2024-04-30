@@ -1,22 +1,51 @@
 import style from './page-forgot-password.module.css';
-import PropTypes from 'prop-types';
-import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link} from "react-router-dom";
+import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link, Navigate, useLocation} from "react-router-dom";
+import {forgotPassword} from "../../services/store/actions/auth";
+import {useDispatch, useSelector} from "react-redux";
+import {useState} from "react";
+import {getCookie} from "../../utils/utils";
 
 const PageForgotPassword = () => {
+  const [email, setEmail] = useState('');
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const cookie = getCookie('token');
+
+  const { forgetPassSuccess } = useSelector(store => store.authReducer);
+
+  const onChangeEmail = e => {
+    setEmail(e.target.value);
+  }
+
+  const onFormSubmit = e => {
+    e.preventDefault();
+    dispatch(forgotPassword({ email }));
+  }
+
+  if (cookie) {
+    return (<Navigate to={location.state?.from || '/'} />);
+  }
   return (
     <div className={`${style['page-layout']}`}>
       <div className={style.row}>
         <h1 className={`${style.title} text text_type_main-medium`}>Восстановление пароля</h1>
-        <form className={style.form}>
-
-          <EmailInput
-            // onChange={onChange}
-            // value={value}
+        <form className={style.form} onSubmit={onFormSubmit}>
+          <Input
+            type={'email'}
+            placeholder={'Укажите e-mail'}
+            onChange={onChangeEmail}
+            value={email}
             name={'email'}
-            isIcon={false}
+            error={false}
+            errorText={'Ошибка'}
+            size={'default'}
           />
-          <Button htmlType="button" type="primary" size="medium">
+          <Button htmlType="submit" type="primary" size="medium">
+            {!!forgetPassSuccess
+              ? (<Navigate to='/reset-password' />)
+              : ''
+            }
             Восстановить
           </Button>
         </form>

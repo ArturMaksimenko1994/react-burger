@@ -1,22 +1,28 @@
 .list-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 0 16px 16px 16px;
-  position: relative;
-  flex-basis: 50%;
-  text-align: center;
-  cursor: pointer;
+
+}
+
+.list-item-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px 16px 16px;
+    position: relative;
+    flex-basis: 50%;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    color: #f2f2f3;
 }
 
 .img {
-  width: 100%;
-  display: block;
+    width: 100%;
+    display: block;
 }
 
 .price {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }

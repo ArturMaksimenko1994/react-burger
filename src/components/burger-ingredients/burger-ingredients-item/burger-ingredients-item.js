@@ -7,11 +7,12 @@ import style from './burger-ingredients-item.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import {openIngredientModal} from "../../../services/store/actions/ingredient-details";
 import {useMemo} from "react";
+import {Link, NavLink, useLocation} from "react-router-dom";
 
 const BurgerIngridientItem = ({ingredient}) => {
+  const dispatch = useDispatch();
 
   const {bun, items} = useSelector((state) => state.constructorReducer);
-  const dispatch = useDispatch();
   const {image, name, price} = ingredient;
 
   const [{opacity}, ref] = useDrag({
@@ -40,18 +41,19 @@ const BurgerIngridientItem = ({ingredient}) => {
 
   return (
     <>
-      <li className={`${style['list-item']}`}
+      <li className={`${style['list-item']}`} style={{opacity}} ref={ref}>
+        <Link to={`/ingredients/${ingredient._id}`} state={{background: true}}
           onClick={() => handleOpenIngredientDetailsModal(ingredient)}
-          style={{opacity}}
-          ref={ref}
-      >
-        {counter() > 0 && <Counter count={counter()} size="default" />}
-        <img className={style.img} src={ingredient.image} alt={ingredient.name}/>
-        <span className={style.price}>
+          className={`${style['list-item-link']}`}
+        >
+          {counter() > 0 && <Counter count={counter()} size="default"/>}
+          <img className={style.img} src={ingredient.image} alt={ingredient.name}/>
+          <span className={style.price}>
           <span className="text text_type_digits-default">{ingredient.price}</span>
           <CurrencyIcon type="primary"/>
         </span>
-        <p className="text text_type_main-default">{ingredient.name}</p>
+          <p className="text text_type_main-default">{ingredient.name}</p>
+        </Link>
       </li>
     </>
   )
