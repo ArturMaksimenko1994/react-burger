@@ -37,4 +37,20 @@
     line-height: 24px;
     color: #8585AD;
     cursor: pointer;
+    text-decoration: none;
 }
+
+.link:hover {
+    color: #f2f2f3;
+}
+
+.linkActive {
+    color: #f2f2f3;
+    cursor: default;
+}
+
+.text {
+    margin: 0;
+}
+
+
