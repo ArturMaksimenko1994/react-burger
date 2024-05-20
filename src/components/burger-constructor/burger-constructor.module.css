@@ -67,3 +67,21 @@
   max-width: 535px;
   width: 100%;
 }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  justify-content: flex-end;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price svg {
+  width: 36px;
+  height: 36px;
+}

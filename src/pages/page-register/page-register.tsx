@@ -4,20 +4,22 @@ import {Link, Navigate, useLocation} from 'react-router-dom';
 import style from './page-register.module.css';
 import {registerUser, setRegisterFormValue} from '../../services/store/actions/auth';
 import {getCookie} from '../../utils/utils';
-import {authReducer} from "../../services/store/reducers/auth";
+import {ChangeEvent, FC, FormEvent} from "react";
 
-const PageRegister = () => {
+const PageRegister: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const cookie = getCookie('token');
-  const { email, password, name } = useSelector(store => store.authReducer.form);
+  const { email, password, name } = useSelector((store: any) => store.authReducer.form);
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // @ts-ignore
     dispatch(setRegisterFormValue(e.target.name, e.target.value));
   }
 
-  const onFormSubmit = e => {
+  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // @ts-ignore
     dispatch(registerUser(email, password, name));
   }
 

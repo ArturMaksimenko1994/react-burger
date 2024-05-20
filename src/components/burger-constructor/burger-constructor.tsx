@@ -1,48 +1,54 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {FC, useEffect, useMemo, useState} from 'react';
 import {useDrop} from 'react-dnd';
 import {useDispatch, useSelector} from 'react-redux';
 import {v4 as uuidv4} from 'uuid'; // Импортируем функцию для генерации уникальных идентификаторов
 
 import style from './burger-constructor.module.css';
 import BurgerConstructorItem from './burger-constructor-item/burger-constructor-item';
-import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components';
-import BurgerConatructorCounting from './burger-conatructor-counting/burger-conatructor-counting';
+import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+
 import {getOrderDetails} from "../../services/store/actions/order-details";
 import {ADD_BUN, ADD_ITEM_CONSTRUCTOR} from "../../services/store/actions/burger-constructor";
 import {getCookie} from "../../utils/utils";
 import {useNavigate} from 'react-router-dom';
+import {TIngredient} from '../../services/types/data';
 
-const BurgerConstructor = () => {
-  const {bun, items} = useSelector((state) => state.constructorReducer);
+interface DropItem {
+  ingredient: TIngredient;
+}
+
+const BurgerConstructor: FC = () => {
+  const {bun, items} = useSelector((store: any) => store.constructorReducer);
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
 
   const cookie = getCookie('token');
+  // const history = useNavigate();
   const history = useNavigate();
-
   const filling = useMemo(
-    () => items.filter((item) => item.type !== 'bun'),
+    () => items.filter((item: TIngredient) => item.type !== 'bun'),
     [items]
   );
 
   useEffect(() => {
-    const totalPrice = filling.reduce((sum, item) => sum + item.price, bun.length === 0 ? 0 : (bun.price * 2));
+    const totalPrice = filling.reduce((sum: number, item: TIngredient) => sum + item.price, bun.length === 0 ? 0 : (bun.price * 2));
     setTotal(totalPrice);
   }, [bun, filling]);
 
   const itemsId = useMemo(
-    () => items.map((item) => item._id),
+    () => items.map((item: TIngredient) => item._id),
     [items]
   );
 
-  const orderDetailsModal = (itemsId) => {
+  const orderDetailsModal = (itemsId: string[]) => {
+    // @ts-ignore
     cookie && dispatch(getOrderDetails(itemsId));
     !cookie && history('/login');
   };
 
   const [, dropTarget] = useDrop({
     accept: "ingredients",
-    drop(item) {
+    drop(item: DropItem) {
       if (item.ingredient.type === "bun") {
         dispatch({
           type: ADD_BUN,
@@ -81,7 +87,7 @@ const BurgerConstructor = () => {
           <p className={`${style['empty-list']}  pr-2 text text_type_main-large`}>&#8592; Выберите начинку</p>
         ) : (
           <ul className={`${style.list}`}>
-            {items.map((elem, index) => {
+            {items.map((elem: TIngredient, index: number) => {
               if (elem.type === 'sauce' || elem.type === 'main') {
                 return (
                   <BurgerConstructorItem
@@ -110,7 +116,32 @@ const BurgerConstructor = () => {
         )}
 
       </div>
-      <BurgerConatructorCounting items={items} total={total} itemsId={itemsId} orderDetailsModal={orderDetailsModal}/>
+      <div className={`${style.row} mt-10`}>
+        <div className={style.price}>
+          <span className="text text_type_digits-medium">{total}</span>
+          <CurrencyIcon type="primary"/>
+        </div>
+        {items.length === 0
+          ? (<Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            disabled
+          >
+            Оформить заказ
+          </Button>)
+          : (<Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={() => {
+              orderDetailsModal(itemsId)
+            }}
+          >
+            Оформить заказ
+          </Button>)}
+      </div>
+      {/*<BurgerConatructorCounting items={items} total={total} itemsId={itemsId} orderDetailsModal={orderDetailsModal}/>*/}
     </div>
   );
 };

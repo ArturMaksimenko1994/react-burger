@@ -1,21 +1,30 @@
-import PropTypes from 'prop-types';
 import BurgerIngridientItem from "../burger-ingredients-item/burger-ingredients-item"
 
-import style from './burger-ingredients-all.module.css';
+import styles from './burger-ingredients-all.module.css';
+import {FC} from "react";
+import { TIngredient } from '../../../services/types/data';
 
-const BurgerIngredientsAll = ({ type, ingredients }) => {
+type TBurgerIngredientsAll = {
+  ingredients: TIngredient[];
+  type: string;
+}
 
+type TCategories = {
+  [key: string]: string;
+}
+
+const BurgerIngredientsAll: FC<TBurgerIngredientsAll>= ({ type, ingredients }) => {
   const category = ingredients.filter((elem) => elem.type === type);
-  const categories = {
+  const categories: TCategories = {
     'bun': 'Булки',
     'sauce': 'Соусы',
     'main': 'Начинки'
-  };
+  }
 
   return (
-    <div className={`${style['group-ingredients']}`} id={type}>
+    <div className={`${styles['group-ingredients']}`} id={type}>
       <h2 className="text text_type_main-medium">{categories[type]}</h2>
-      <ul className={`${style['list']}`}>
+      <ul className={`${styles['list']}`}>
         {category?.map((elem) => (
           <BurgerIngridientItem key={elem._id} ingredient={elem} />
         ))}
@@ -23,10 +32,5 @@ const BurgerIngredientsAll = ({ type, ingredients }) => {
     </div>
   )
 }
-
-BurgerIngredientsAll.propTypes = {
-  type: PropTypes.string.isRequired,
-  ingredients: PropTypes.array.isRequired,
-};
 
 export default BurgerIngredientsAll;

@@ -1,35 +1,34 @@
 import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Link, NavLink, useLocation} from 'react-router-dom';
 
-import style from './app-header.module.css';
+import styles from './app-header.module.css';
+import {FC} from "react";
 
-const AppHeader = () => {
+const AppHeader: FC = () => {
 
   const location = useLocation();
 
   return (
-    <header className={`${style.header} pb-4 pt-4`}>
-      <div className={style.row}>
-        <nav className={style.nav}>
-          <ul className={style.list}>
-            <li className={`${style.item} pb-4 pt-4 pl-5 pr-5`}>
+    <header className={`${styles.header} pb-4 pt-4`}>
+      <div className={styles.row}>
+        <nav className={styles.nav}>
+          <ul className={styles.list}>
+            <li className={`${styles.item} pb-4 pt-4 pl-5 pr-5`}>
               <NavLink
                 to='/'
-                exact={"true"}
                 className={({ isActive }) =>
-                   isActive ? `${style.link} ${style.linkActive} text text_type_main-default` : `${style.link} text text_type_main-default `
+                   isActive ? `${styles.link} ${styles.linkActive} text text_type_main-default` : `${styles.link} text text_type_main-default `
                 }
               >
                 <BurgerIcon type={location.pathname === '/' ? 'primary' : 'secondary'}/>
-                <p className={`${style.text} pl-2`}>Конструктор</p>
+                <p className={`${styles.text} pl-2`}>Конструктор</p>
               </NavLink>
             </li>
-            <li className={`${style.link} pb-4 pt-4 pl-5 pr-5`}>
+            <li className={`${styles.link} pb-4 pt-4 pl-5 pr-5`}>
               <NavLink
                 to='/feed'
-                exact={"true"}
                 className={({ isActive }) =>
-                  isActive ? `${style.link} ${style.linkActive} text text_type_main-default` : `${style.link} text text_type_main-default `
+                  isActive ? `${styles.link} ${styles.linkActive} text text_type_main-default` : `${styles.link} text text_type_main-default `
                 }
               >
                 <ListIcon type={location.pathname === '/feed' ? 'primary' : 'secondary'} />
@@ -43,9 +42,9 @@ const AppHeader = () => {
         </Link>
         <NavLink
           to='/profile'
-          exact={"true"}
+
           className={({ isActive }) =>
-            isActive ? `${style.link} ${style.linkActive} text text_type_main-default` : `${style.link} text text_type_main-default `
+            isActive ? `${styles.link} ${styles.linkActive} text text_type_main-default` : `${styles.link} text text_type_main-default `
           }
         >
           <ProfileIcon type={location.pathname === '/profile' || location.pathname === '/profile/orders' ? 'primary' : 'secondary'} />
