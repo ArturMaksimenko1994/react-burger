@@ -4,13 +4,13 @@ import BurgerConstructor from '../../components/burger-constructor/burger-constr
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
-import style from './page-burger.module.css';
+import styles from './page-burger.module.css';
 
 const PageBurger = () => {
   return (
-    <section className={style.burger}>
+    <section className={styles.burger}>
       <h1 className="text text_type_main-large">Соберите бургер</h1>
-      <div className={style.row}>
+      <div className={styles.row}>
         <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
           <BurgerConstructor/>

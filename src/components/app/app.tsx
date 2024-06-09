@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, FC} from 'react';
 import {Routes, Route, useLocation, useNavigate, Router} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import style from './app.module.css';
@@ -24,11 +24,10 @@ import {getUser, updateToken} from '../../services/store/actions/auth';
 import {getCookie} from '../../utils/utils';
 import {ProtectedRoute} from '../protected-route/protected-route';
 import {getBurgerIngredients} from "../../services/store/actions/burger-ingredients";
-import {orderReducer} from "../../services/store/reducers/order-details";
 
-function App() {
+const App: FC = () => {
   const dispatch = useDispatch();
-  const orderNumber = useSelector(store => store.orderReducer.number);
+  const orderNumber = useSelector((store: any) => store.orderReducer.number);
 
   const token = localStorage.getItem('refreshToken');
   const cookie = getCookie('token');
@@ -38,15 +37,18 @@ function App() {
   const background = location.state?.background
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(getBurgerIngredients());
   }, [dispatch]);
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
   useEffect(() => {
     if (!cookie && token) {
+      // @ts-ignore
       dispatch(updateToken());
     }
   }, [dispatch, token, cookie]);

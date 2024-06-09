@@ -1,25 +1,27 @@
-import style from './page-reset-password.module.css';
-import PropTypes from 'prop-types';
-import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from './page-reset-password.module.css';
+import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Navigate, useLocation} from "react-router-dom";
 import {resetPassword, setResetFormValue} from "../../services/store/actions/auth";
 import {useDispatch, useSelector} from "react-redux";
 import {getCookie} from "../../utils/utils";
+import {ChangeEvent, FC, FormEvent} from "react";
 
-const PageResetPassword = () => {
+const PageResetPassword:FC = () => {
 
   const dispatch = useDispatch();
   const location = useLocation()
   const cookie = getCookie('token');
-  const { password, code } = useSelector(store => store.authReducer.form);
-  const { resetPassSuccess, forgetPassSuccess } = useSelector(store => store.authReducer);
+  const { password, code } = useSelector((store: any) => store.authReducer.form);
+  const { resetPassSuccess, forgetPassSuccess } = useSelector((store: any) => store.authReducer);
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // @ts-ignore
     dispatch(setResetFormValue(e.target.name, e.target.value));
   }
 
-  const onFormSubmit = e => {
+  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // @ts-ignore
     dispatch(resetPassword({ password, token: code }));
   }
 
@@ -31,10 +33,10 @@ const PageResetPassword = () => {
   }
 
   return (
-    <div className={`${style['page-layout']}`}>
-      <div className={style.row}>
-        <h1 className={`${style.title} text text_type_main-medium`}>Восстановление пароля</h1>
-        <form className={style.form} onSubmit={onFormSubmit}>
+    <div className={`${styles['page-layout']}`}>
+      <div className={styles.row}>
+        <h1 className={`${styles.title} text text_type_main-medium`}>Восстановление пароля</h1>
+        <form className={styles.form} onSubmit={onFormSubmit}>
           <PasswordInput
             placeholder={'Введите новый пароль'}
             onChange={onChange}
@@ -61,9 +63,9 @@ const PageResetPassword = () => {
           </Button>
         </form>
       </div>
-      <div className={`${style.redirect} pt-20`}>
+      <div className={`${styles.redirect} pt-20`}>
         <p className="text text_type_main-default text_color_inactive">Уже зарегистрированы?
-          <Link className={style.link} to='/login'>Войти</Link>
+          <Link className={styles.link} to='/login'>Войти</Link>
         </p>
       </div>
     </div>

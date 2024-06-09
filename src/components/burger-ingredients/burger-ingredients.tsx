@@ -5,14 +5,15 @@ import {useInView} from 'react-intersection-observer';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientsAll from "./burger-ingredients-all/burger-ingredients-all";
 import {getBurgerIngredients} from '../../services/store/actions/burger-ingredients';
-import style from './burger-ingredients.module.css';
+import styles from './burger-ingredients.module.css';
 
 const BurgerIngredients = () => {
 
   const dispatch = useDispatch();
-  const ingredients = useSelector(store => store.burgerIngredientsReducer.ingredients)
+  const ingredients = useSelector((store: any) => store.burgerIngredientsReducer.ingredients);
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(getBurgerIngredients());
   }, [dispatch]);
 
@@ -22,9 +23,11 @@ const BurgerIngredients = () => {
   const [bunRef, bunInView] = useInView({
     threshold: 0.1
   });
+
   const [sauceRef, sauceInView] = useInView({
     threshold: 0.1
   });
+
   const [mainRef, mainInView] = useInView({
     threshold: 0.1
   });
@@ -52,20 +55,38 @@ const BurgerIngredients = () => {
   return (
     <div className="mt-5">
 
-      <div className={`${style.tab} pt-5`}>
-        <a href='#bun' className={style.link}>
-          <Tab value="bun" active={current === "bun"}>Булки</Tab>
+      <div className={`${styles.tab} pt-5`}>
+        <a href='#bun' className={styles.link}>
+          <Tab
+            value="bun"
+            active={current === "bun"}
+            onClick={() => setCurrent('bun')}
+          >
+            Булки
+          </Tab>
         </a>
-        <a href='#sauce' className={style.link}>
-          <Tab value="sauce" active={current === "sauce"}>Соусы</Tab>
+        <a href='#sauce' className={styles.link}>
+          <Tab
+            value="sauce"
+            active={current === "sauce"}
+            onClick={() => setCurrent('sauce')}
+          >
+            Соусы
+          </Tab>
         </a>
-        <a href='#main' className={style.link}>
-          <Tab value="main" active={current === "main"}>Начинки</Tab>
+        <a href='#main' className={styles.link}>
+          <Tab
+            value="main"
+            active={current === "main"}
+            onClick={() => setCurrent('main')}
+          >
+            Начинки
+          </Tab>
         </a>
       </div>
 
       <div className="mt-10">
-        <div className={`${style['all-ingredients']}`}>
+        <div className={`${styles['all-ingredients']}`}>
           <div ref={bunRef}>
             <BurgerIngredientsAll
               type="bun"

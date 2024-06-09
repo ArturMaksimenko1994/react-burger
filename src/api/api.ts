@@ -1,25 +1,31 @@
 import {getCookie} from "../utils/utils";
 import {BASE_URL} from "./api-сonfig";
 
+import {
+  TIngredientResponse,
+  TOrderDetailsResponse,
+  TUserLogoutResponse,
+  TUserResponce
+} from '../services/types/data';
+
 // Функция для проверки ответа от сервера
-const checkResponse = (response) => {
-  if (!response.ok) {
-    throw new Error("Произошла ошибка при выполнении запроса.");
+export const checkResponse = <T>(res: Response): Promise<T> => {
+  if (res.ok) {
+    return res.json();
+  } else {
+    return Promise.reject(`Ошибка: code ${res.status}`);
   }
-  const data = response.json();
-  console.log("Данные из API:", data); // Выводим данные в консоль
-  return data;
-};
+}
 
 // Функция для получения данных о ингредиентах
 export const getIngredientsData = () => {
   return fetch(`${BASE_URL}/ingredients`)
-    .then(checkResponse)
+    .then(res => checkResponse<TIngredientResponse>(res));
 };
 
 // Функция для отправки заказа на сервер
-export const orderDetailsRequest = async (productsId) => {
-  const res = await fetch(`${BASE_URL}/orders`, {
+export const orderDetailsRequest = async (productsId: string[]) => {
+  return await fetch(`${BASE_URL}/orders`, {
     method: 'POST',
     body: JSON.stringify({
       ingredients: productsId
@@ -27,23 +33,23 @@ export const orderDetailsRequest = async (productsId) => {
     headers: {
       'Content-Type': 'application/json'
     }
-  });
-  return checkResponse(res);
+  })
+    .then(res => checkResponse<TOrderDetailsResponse>(res));
 }
 
 // Функция для получения данных об ингредиенте
 export const getIngredientData = async () => {
-  const res = await fetch(`${BASE_URL}/ingredients`, {
+  return await fetch(`${BASE_URL}/ingredients`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   })
-  return checkResponse(res);
+    .then(res => checkResponse<TIngredientResponse>(res));
 }
 
 // Функция для отправки запроса на сброс пароля password-reset
-export const forgotPassRequest = async email => {
+export const forgotPassRequest = async (email: string) => {
   return await fetch(`${BASE_URL}/password-reset`, {
     method: 'POST',
     body: JSON.stringify(
@@ -58,11 +64,11 @@ export const forgotPassRequest = async email => {
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
   })
-    .then(checkResponse);
+    .then(res => checkResponse<TUserResponce>(res));
 }
 
 // Функция для отправки запроса на сброс пароля password-reset/reset
-export const resetPassRequest = async (password, token) => {
+export const resetPassRequest = async (password: string, token: string | any) => {
   return await fetch(`${BASE_URL}/password-reset/reset`, {
     method: 'POST',
     body: JSON.stringify(
@@ -73,11 +79,11 @@ export const resetPassRequest = async (password, token) => {
       'Content-Type': 'application/json',
     },
   })
-    .then(checkResponse);
+    .then(res => checkResponse<TUserResponce>(res));
 }
 
 // Функция для отправки запроса на аутентификацию пользователя
-export const loginRequest = async (email, password) => {
+export const loginRequest = async (email: string, password: string) => {
   return await fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
@@ -88,11 +94,11 @@ export const loginRequest = async (email, password) => {
       password: password,
     }),
   })
-    .then(checkResponse);
+    .then(res => checkResponse<TUserLogoutResponse>(res));
 }
 
 // Функция для отправки запроса на регистрацию пользователя
-export const resgisterUserRequest = async (email, password, name) => {
+export const resgisterUserRequest = async (email: string, password: string, name: string) => {
   return await fetch(`${BASE_URL}/auth/register`, {
     method: 'POST',
     body: JSON.stringify({
@@ -104,7 +110,7 @@ export const resgisterUserRequest = async (email, password, name) => {
       'Content-Type': 'application/json',
     },
   })
-    .then(checkResponse);
+    .then(res => checkResponse<TUserResponce>(res));
 }
 
 // Функция для отправки запроса на выход пользователя
@@ -118,7 +124,7 @@ export const logoutRequest = async () => {
       token: localStorage.getItem('refreshToken'),
     }),
   })
-    .then(checkResponse);
+    .then(res => checkResponse<TUserResponce>(res));
 }
 
 // Функция для получения данных пользователя
@@ -130,11 +136,11 @@ export const getUserRequest = async () => {
       Authorization: 'Bearer ' + getCookie('token'),
     },
   })
-    .then(checkResponse);
+    .then(res => checkResponse<TUserResponce>(res));
 }
 
 // Функция для обновления данных пользователя
-export const updateUserRequest = async (email, name, password) => {
+export const updateUserRequest = async (email: string, name: string, password: string) => {
   return await fetch(`${BASE_URL}/auth/user`, {
     method: 'PATCH',
     headers: {
@@ -147,7 +153,7 @@ export const updateUserRequest = async (email, name, password) => {
       password: password,
     }),
   })
-    .then(checkResponse);
+    .then(res => checkResponse<TUserResponce>(res));
 }
 
 // Функция для обновления токена аутентификации
@@ -161,5 +167,5 @@ export const updateTokenRequest = async () => {
       token: localStorage.getItem('refreshToken'),
     }),
   })
-    .then(checkResponse);
+    .then(res => checkResponse<TUserResponce>(res));
 }

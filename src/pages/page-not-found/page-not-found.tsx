@@ -1,8 +1,8 @@
 import style from './page-not-found.module.css';
-import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
+import {FC} from "react";
 
-const PageNotFound = () => {
+const PageNotFound: FC = () => {
   return (
     <div className={`${style['page-layout']}`}>
       <div className={style.row}>
