@@ -1,6 +1,6 @@
 import React, {useEffect, useCallback, FC} from 'react';
-import {Routes, Route, useLocation, useNavigate, Router} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
+import {Routes, Route, useLocation, useNavigate, Router, useMatch} from 'react-router-dom';
+import {useDispatch, useSelector} from '../../services/hooks';
 import style from './app.module.css';
 
 import AppHeader from '../app-header/app-header';
@@ -11,14 +11,17 @@ import PageForgotPassword from '../../pages/page-forgot-password/page-forgot-pas
 import PageResetPassword from '../../pages/page-reset-password/page-reset-password';
 import PageProfile from '../../pages/page-profile/page-profile';
 import PageNotFound from '../../pages/page-not-found/page-not-found';
+import PageFeed from '../../pages/page-feed/page-feed';
 
 import Modal from "../modal/modal";
 
 import {closeIngredientModal} from "../../services/store/actions/ingredient-details";
+import {closeOrderInfoModal} from '../../services/store/actions/order-info-details';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import OrderDetails from "../order-details/order-details";
+import {OrdersInfo} from '../order-info/order-info';
 import {closeOrderModal} from "../../services/store/actions/order-details";
-import {RESET_ITEM} from "../../services/store/actions/burger-constructor";
+import {RESET_ITEM} from "../../services/store/action-types";
 
 import {getUser, updateToken} from '../../services/store/actions/auth';
 import {getCookie} from '../../utils/utils';
@@ -27,76 +30,119 @@ import {getBurgerIngredients} from "../../services/store/actions/burger-ingredie
 
 const App: FC = () => {
   const dispatch = useDispatch();
-  const orderNumber = useSelector((store: any) => store.orderReducer.number);
+
+
+  const location = useLocation();
+  const background = location.state && location.state.background;
+
+  const matchProfileOrder = useMatch('/profile/orders/:id');
+  const matchFeed = useMatch('/feed/:id');
+  const idOrderInfo = matchFeed?.params.id;
+  const idOrderInfoProfill = matchProfileOrder?.params.id;
+
+  const orderNumber = useSelector((store) => store.order.number);
 
   const token = localStorage.getItem('refreshToken');
   const cookie = getCookie('token');
-
-  const location = useLocation();
   const navigate = useNavigate();
-  const background = location.state?.background
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getBurgerIngredients());
   }, [dispatch]);
 
   useEffect(() => {
-    // @ts-ignore
-    dispatch(getUser());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (!cookie && token) {
-      // @ts-ignore
       dispatch(updateToken());
     }
+    if (cookie && token) {
+      dispatch(getUser());
+    }
   }, [dispatch, token, cookie]);
+
+  const handleCloseIngredientDetailsModal = useCallback(() => {
+    dispatch(closeIngredientModal());
+    navigate(-1);
+  }, [dispatch]);
+
+  const handleCloseOrderInfoDetailsModal = useCallback(() => {
+    dispatch(closeOrderInfoModal());
+    navigate(-1);
+  }, [dispatch]);
 
   const handleCloseOrderDetailsModal = useCallback(() => {
     dispatch(closeOrderModal());
     dispatch({type: RESET_ITEM});
   }, [dispatch]);
 
-  const handleCloseIngredientDetailsModal = useCallback(() => {
-    dispatch(closeIngredientModal());
-    navigate('/');
-  }, [dispatch]);
-
   return (
     <div className={style.app}>
       <AppHeader/>
       <main className={`${style.main} pt-10`}>
+        <Routes location={background || location}>
+          <Route path="/" element={<PageBurger/>}/>
+          <Route path="/login" element={<PageLogin/>}/>
+          <Route path="/register" element={<PageRegister/>}/>
+
+          <Route path="/feed" element={<PageFeed/>}/>
+          <Route path="/feed/:id" element={<OrdersInfo/>}/>
+
+          <Route path="/ingredients/:id" element={<IngredientDetails/>}/>
+
+          <Route path="/forgot-password" element={<PageForgotPassword/>}/>
+          <Route path="/reset-password" element={<PageResetPassword/>}/>
+          <Route path="/profile/*" element={
+            <ProtectedRoute>
+              <PageProfile/>
+            </ProtectedRoute>
+          }/>
+
+          <Route path="/profile/orders/:id" element={
+            <ProtectedRoute>
+              <OrdersInfo/>
+            </ProtectedRoute>
+          }/>
+          <Route path="*" element={<PageNotFound/>}/>
+        </Routes>
+
+        {background && (
           <Routes>
-            <Route path="/" element={<PageBurger/>}/>
-            <Route path="/login" element={<PageLogin/>}/>
-            <Route path="/register" element={<PageRegister/>}/>
-
-            {background
-              ? (
-                <Route path='/ingredients/:id' element={
-                  <Modal
-                    title='Детали ингредиента'
-                    onClickClose={handleCloseIngredientDetailsModal}>
-                    <IngredientDetails/>
-                  </Modal>
-                }/>
-              ):(
-                <Route path="/ingredients/:id" element={
+            <Route
+              path="/ingredients/:id"
+              element={
+                <Modal title="Детали ингредиента" onClickClose={handleCloseIngredientDetailsModal}>
                   <IngredientDetails/>
-                }/>
-              )
-            }
-
-            <Route path="/forgot-password" element={<PageForgotPassword/>}/>
-            <Route path="/reset-password" element={<PageResetPassword/>}/>
-            <Route path="/profile/*" element={
-              <ProtectedRoute>
-                <PageProfile />
-              </ProtectedRoute>
-            }/>
-            <Route path="*" element={<PageNotFound/>}/>]
+                </Modal>
+              }
+            />
           </Routes>
+        )}
+
+        {(background && idOrderInfo) && (
+          <Routes>
+            <Route
+              path="/feed/:id"
+              element={
+                <Modal title="" onClickClose={handleCloseOrderInfoDetailsModal}>
+                  <OrdersInfo/>
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+
+        {background && idOrderInfoProfill && (
+          <Routes>
+            <Route
+              path="/profile/orders/:id"
+              element={
+                <Modal title="" onClickClose={handleCloseIngredientDetailsModal}>
+                  <OrdersInfo/>
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+
       </main>
 
       {!!orderNumber &&

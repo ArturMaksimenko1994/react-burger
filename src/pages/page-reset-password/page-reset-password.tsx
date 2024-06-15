@@ -2,26 +2,26 @@ import styles from './page-reset-password.module.css';
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Navigate, useLocation} from "react-router-dom";
 import {resetPassword, setResetFormValue} from "../../services/store/actions/auth";
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector, useDispatch } from '../../services/hooks';
 import {getCookie} from "../../utils/utils";
 import {ChangeEvent, FC, FormEvent} from "react";
+import { TLocation } from '../../services/types/data';
 
 const PageResetPassword:FC = () => {
 
   const dispatch = useDispatch();
   const location = useLocation()
+  // const location = useLocation<TLocation>()
   const cookie = getCookie('token');
-  const { password, code } = useSelector((store: any) => store.authReducer.form);
-  const { resetPassSuccess, forgetPassSuccess } = useSelector((store: any) => store.authReducer);
+  const { password, code } = useSelector((store) => store.auth.form);
+  const { resetPassSuccess, forgetPassSuccess } = useSelector((store) => store.auth);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // @ts-ignore
     dispatch(setResetFormValue(e.target.name, e.target.value));
   }
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(resetPassword({ password, token: code }));
   }
 

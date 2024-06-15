@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useMemo, useState} from 'react';
 import {useDrop} from 'react-dnd';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector, useDispatch} from '../../services/hooks';
 import {v4 as uuidv4} from 'uuid'; // Импортируем функцию для генерации уникальных идентификаторов
 
 import style from './burger-constructor.module.css';
@@ -8,7 +8,7 @@ import BurgerConstructorItem from './burger-constructor-item/burger-constructor-
 import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import {getOrderDetails} from "../../services/store/actions/order-details";
-import {ADD_BUN, ADD_ITEM_CONSTRUCTOR} from "../../services/store/actions/burger-constructor";
+import {ADD_BUN, ADD_ITEM_CONSTRUCTOR} from "../../services/store/action-types";
 import {getCookie} from "../../utils/utils";
 import {useNavigate} from 'react-router-dom';
 import {TIngredient} from '../../services/types/data';
@@ -18,30 +18,24 @@ interface DropItem {
 }
 
 const BurgerConstructor: FC = () => {
-  const {bun, items} = useSelector((store: any) => store.constructorReducer);
+  const {bun, items, itemsId, bunRequestSuccess} = useSelector((store) => store.burgerConstructor);
+  const { orderDetailsRequest } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
 
   const cookie = getCookie('token');
-  // const history = useNavigate();
   const history = useNavigate();
+
   const filling = useMemo(
-    () => items.filter((item: TIngredient) => item.type !== 'bun'),
-    [items]
-  );
+    () => items.filter((item) => item.type !== 'bun'),
+    [items]);
 
   useEffect(() => {
-    const totalPrice = filling.reduce((sum: number, item: TIngredient) => sum + item.price, bun.length === 0 ? 0 : (bun.price * 2));
+    const totalPrice = items.reduce((sum, item) => sum + item.price, !bun ? 0 : (bun.price * 2));
     setTotal(totalPrice);
   }, [bun, filling]);
 
-  const itemsId = useMemo(
-    () => items.map((item: TIngredient) => item._id),
-    [items]
-  );
-
   const orderDetailsModal = (itemsId: string[]) => {
-    // @ts-ignore
     cookie && dispatch(getOrderDetails(itemsId));
     !cookie && history('/login');
   };
@@ -69,7 +63,7 @@ const BurgerConstructor: FC = () => {
     <div className="mt-5">
       <div className={style.group} ref={dropTarget}>
 
-        {bun.length === 0 ? (
+        {!bunRequestSuccess ? (
           <p className={`${style.bun} ${style['bun-top']} text text_type_main-large pr-2`}>Выберите булочку</p>
         ) : (
           <div className={`${style['bun-constructor-element']}`}>
@@ -87,11 +81,11 @@ const BurgerConstructor: FC = () => {
           <p className={`${style['empty-list']}  pr-2 text text_type_main-large`}>&#8592; Выберите начинку</p>
         ) : (
           <ul className={`${style.list}`}>
-            {items.map((elem: TIngredient, index: number) => {
+            {items.map((elem, index: number) => {
               if (elem.type === 'sauce' || elem.type === 'main') {
                 return (
                   <BurgerConstructorItem
-                    key={elem.id} // Заменяем id на уникальный uuid
+                    key={`${elem.id}-${uuidv4()}`} // Генерируем уникальный ключ с помощью uuidv4()
                     items={elem}
                     index={index}
                   />
@@ -101,7 +95,7 @@ const BurgerConstructor: FC = () => {
           </ul>
         )}
 
-        {bun.length === 0 ? (
+        {!bunRequestSuccess ? (
           <p className={`${style.bun} ${style['bun-bottom']} text text_type_main-large pr-2`}>Выберите булочку </p>
         ) : (
           <div className={`${style['bun-constructor-element']}`}>
@@ -121,14 +115,14 @@ const BurgerConstructor: FC = () => {
           <span className="text text_type_digits-medium">{total}</span>
           <CurrencyIcon type="primary"/>
         </div>
-        {items.length === 0
+        {items.length === 0 || !!orderDetailsRequest
           ? (<Button
             htmlType="button"
             type="primary"
             size="large"
             disabled
           >
-            Оформить заказ
+            {orderDetailsRequest ? '...Заказ оформляется' : 'Оформить заказ'}
           </Button>)
           : (<Button
             htmlType="button"
@@ -141,7 +135,6 @@ const BurgerConstructor: FC = () => {
             Оформить заказ
           </Button>)}
       </div>
-      {/*<BurgerConatructorCounting items={items} total={total} itemsId={itemsId} orderDetailsModal={orderDetailsModal}/>*/}
     </div>
   );
 };

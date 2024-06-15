@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import {useInView} from 'react-intersection-observer';
 
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
@@ -10,10 +10,9 @@ import styles from './burger-ingredients.module.css';
 const BurgerIngredients = () => {
 
   const dispatch = useDispatch();
-  const ingredients = useSelector((store: any) => store.burgerIngredientsReducer.ingredients);
+  const ingredients = useSelector((store) => store.burgerIngredients.ingredients);
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getBurgerIngredients());
   }, [dispatch]);
 

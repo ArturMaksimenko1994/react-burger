@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 
-//Описывает структуру данных для ингредиентов бургера TIngredient
 export type TIngredient = {
   calories: number;
   carbohydrates: number;
@@ -16,36 +15,6 @@ export type TIngredient = {
   _id: string;
   id?: string;
   count?: number;
-}
-
-//Описывает структуру данных для местоположения TLocation
-export type TLocation = {
-  background: {
-    pathname: string;
-    search: string;
-    hash: string;
-    state: null;
-    key: string;
-  }
-  from: string;
-  state?: object;
-};
-
-//Описывает структуру POPUP
-export type TModal = {
-  title: string;
-  children: ReactNode;
-  onClickClose: () => void;
-}
-
-//Описывает структуру OVERLAY POPUP
-export type TModalOverlay = {
-  onClickClose: () => void;
-}
-
-export type TIngredientResponse = {
-  data: Array<TIngredient>;
-  success: boolean;
 }
 
 export type TUser = {
@@ -67,16 +36,26 @@ export type TOrder = {
   _id: string;
 }
 
+export type TFeed = {
+  createdAt: string;
+  ingredients: string[];
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;
+  _id: string;
+}
+
+
 export type TOrderDetailsResponse = {
   name: string
   order: TOrder;
   success: boolean;
 }
 
-export type TUserLogoutResponse = {
-  message: string;
+export type TIngredientResponse = {
+  data: Array<TIngredient>;
   success: boolean;
-  refreshToken: string;
 }
 
 export type TUserResponce = {
@@ -86,3 +65,48 @@ export type TUserResponce = {
   refreshToken: string;
   message: string;
 }
+
+export type TUserLogoutResponse = {
+  message: string;
+  success: boolean;
+  refreshToken: string;
+}
+
+export type TFeedResponce = {
+  success: boolean;
+  total: number;
+  totalToday: number;
+  orders: Array<TFeed>;
+}
+
+export type TLocation = {
+  background: {
+    pathname: string;
+    search: string;
+    hash: string;
+    state: null;
+    key: string;
+  }
+  from: string;
+  state?: object;
+};
+
+export type TModal = {
+  title: string;
+  children: ReactNode;
+  onClickClose: () => void;
+}
+
+export type TModalOverlay = {
+  onClickClose: () => void;
+}
+
+export type TWsSocketMiddlewareActions = {
+  wsInit: string;
+  wsSendMessage: string;
+  onOpen: string;
+  onClose: string;
+  onError: string;
+  onMessage: string;
+}
+
