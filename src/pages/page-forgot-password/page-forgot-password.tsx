@@ -1,31 +1,33 @@
-import styles from './page-forgot-password.module.css';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Navigate, useLocation} from "react-router-dom";
 import {forgotPassword} from "../../services/store/actions/auth";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from '../../services/hooks';
 import {ChangeEvent, FC, FormEvent, useState} from "react";
 import {getCookie} from "../../utils/utils";
+import { TLocation } from '../../services/types/data';
+import styles from './page-forgot-password.module.css';
 
 const PageForgotPassword:FC = () => {
   const [email, setEmail] = useState('');
   const dispatch = useDispatch();
   const location = useLocation();
+  // const location = useLocation<TLocation>();
   const cookie = getCookie('token');
 
-  const { forgetPassSuccess } = useSelector((store: any) => store.authReducer);
+  const { forgetPassSuccess } = useSelector((store) => store.auth);
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(forgotPassword({ email }));
   }
 
   if (cookie) {
     return (<Navigate to={location.state?.from || '/'} />);
   }
+
   return (
     <div className={`${styles['page-layout']}`}>
       <div className={styles.row}>

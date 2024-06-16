@@ -17,12 +17,6 @@ export const checkResponse = <T>(res: Response): Promise<T> => {
   }
 }
 
-// Функция для получения данных о ингредиентах
-export const getIngredientsData = () => {
-  return fetch(`${BASE_URL}/ingredients`)
-    .then(res => checkResponse<TIngredientResponse>(res));
-};
-
 // Функция для отправки заказа на сервер
 export const orderDetailsRequest = async (productsId: string[]) => {
   return await fetch(`${BASE_URL}/orders`, {
@@ -31,10 +25,11 @@ export const orderDetailsRequest = async (productsId: string[]) => {
       ingredients: productsId
     }),
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + getCookie('token')
+    },
   })
-    .then(res => checkResponse<TOrderDetailsResponse>(res));
+    .then (res => checkResponse<TOrderDetailsResponse>(res));
 }
 
 // Функция для получения данных об ингредиенте
@@ -83,7 +78,7 @@ export const resetPassRequest = async (password: string, token: string | any) =>
 }
 
 // Функция для отправки запроса на аутентификацию пользователя
-export const loginRequest = async (email: string, password: string) => {
+export const loginRequest = async (email: string, password: string): Promise<TUserResponce> => {
   return await fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
@@ -94,7 +89,7 @@ export const loginRequest = async (email: string, password: string) => {
       password: password,
     }),
   })
-    .then(res => checkResponse<TUserLogoutResponse>(res));
+    .then(res => checkResponse<TUserResponce>(res));
 }
 
 // Функция для отправки запроса на регистрацию пользователя
@@ -124,7 +119,7 @@ export const logoutRequest = async () => {
       token: localStorage.getItem('refreshToken'),
     }),
   })
-    .then(res => checkResponse<TUserResponce>(res));
+    .then(res => checkResponse<TUserLogoutResponse>(res));
 }
 
 // Функция для получения данных пользователя

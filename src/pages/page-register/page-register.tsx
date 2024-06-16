@@ -1,25 +1,25 @@
 import {Button, EmailInput, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import {Link, Navigate, useLocation} from 'react-router-dom';
-import style from './page-register.module.css';
+import styles from './page-register.module.css';
 import {registerUser, setRegisterFormValue} from '../../services/store/actions/auth';
 import {getCookie} from '../../utils/utils';
 import {ChangeEvent, FC, FormEvent} from "react";
+import { TLocation } from '../../services/types/data';
 
 const PageRegister: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  // const location = useLocation<TLocation>();
   const cookie = getCookie('token');
-  const { email, password, name } = useSelector((store: any) => store.authReducer.form);
+  const { email, password, name } = useSelector((store) => store.auth.form);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // @ts-ignore
     dispatch(setRegisterFormValue(e.target.name, e.target.value));
   }
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(registerUser(email, password, name));
   }
 
@@ -28,10 +28,10 @@ const PageRegister: FC = () => {
   }
 
   return (
-    <div className={`${style['page-layout']}`}>
-      <div className={style.row}>
-        <h1 className={`${style.title} text text_type_main-medium`}>Регистрация</h1>
-        <form className={style.form} onSubmit={onFormSubmit} >
+    <div className={`${styles['page-layout']}`}>
+      <div className={styles.row}>
+        <h1 className={`${styles.title} text text_type_main-medium`}>Регистрация</h1>
+        <form className={styles.form} onSubmit={onFormSubmit} >
           <Input
             type={'text'}
             placeholder={'Имя'}
@@ -60,9 +60,9 @@ const PageRegister: FC = () => {
           </Button>
         </form>
       </div>
-      <div className={`${style.redirect} pt-20`}>
+      <div className={`${styles.redirect} pt-20`}>
         <p className="text text_type_main-default text_color_inactive">Уже зарегистрированы?
-          <Link className={style.link} to='/login'>Войти</Link>
+          <Link className={styles.link} to='/login'>Войти</Link>
         </p>
       </div>
     </div>

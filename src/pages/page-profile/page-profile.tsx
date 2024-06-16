@@ -1,20 +1,30 @@
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import React, {ChangeEvent, FC, FormEvent, useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import {NavLink, Route, Routes} from 'react-router-dom';
-import {singOut, updateUser} from '../../services/store/actions/auth';
+import {getUser, singOut, updateUser} from '../../services/store/actions/auth';
+import { wsAuthConnectionClosed, wsAuthConnectionOpen } from '../../services/store/actions/wsAuthActions';
 import {Orders} from './orders/orders';
-import style from './page-profile.module.css';
+import { TLocation } from '../../services/types/data';
+import styles from './page-profile.module.css';
 
 const PageProfile: FC = () => {
 
   const dispatch = useDispatch();
-  const { email, name } = useSelector((store:any) => store.authReducer.user) || {};
+  const { email, name } = useSelector((store) => store.auth.user) || {};
   const [form, setForm] = useState({
     email: email,
     name: name,
     password: '',
   });
+
+  useEffect(() => {
+    dispatch(getUser());
+    dispatch(wsAuthConnectionOpen());
+    return () => {
+      dispatch(wsAuthConnectionClosed())
+    }
+  }, [dispatch]);
 
   useEffect(()=>{
     if (email && name){
@@ -32,12 +42,10 @@ const PageProfile: FC = () => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(updateUser(form.email, form.name, form.password));
   };
 
   function handleSingOut() {
-    // @ts-ignore
     dispatch(singOut());
   };
 
@@ -51,38 +59,38 @@ const PageProfile: FC = () => {
   }
 
   return (
-    <div className={`${style['page-layout-full']}`}>
-      <div className={`${style.container}`}>
-        <div className={`${style.row}`}>
-          <ul className={`${style.list}`}>
-            <li className={`${style.item}`}>
+    <div className={`${styles['page-layout-full']}`}>
+      <div className={`${styles.container}`}>
+        <div className={`${styles.row}`}>
+          <ul className={`${styles.list}`}>
+            <li className={`${styles.item}`}>
               <NavLink
                 to='/profile'
                 end={true}
-                className={({isActive}) => isActive ? `${style.link} ${style.linkActive} text text_type_main-medium` : `${style.link} text text_type_main-medium`}
+                className={({isActive}) => isActive ? `${styles.link} ${styles.linkActive} text text_type_main-medium` : `${styles.link} text text_type_main-medium`}
               >
                 Профиль
               </NavLink>
             </li>
-            <li className={`${style.item}`}>
+            <li className={`${styles.item}`}>
               <NavLink
                 to='/profile/orders'
-                className={({isActive}) => isActive ? `${style.link} ${style.linkActive} text text_type_main-medium` : `${style.link} text text_type_main-medium`}
+                className={({isActive}) => isActive ? `${styles.link} ${styles.linkActive} text text_type_main-medium` : `${styles.link} text text_type_main-medium`}
               >
                 История заказов
               </NavLink>
             </li>
-            <li className={`${style.item}`}>
+            <li className={`${styles.item}`}>
               <NavLink
                 to='/login'
-                className={`${style.link} text text_type_main-medium`}
+                className={`${styles.link} text text_type_main-medium`}
                 onClick={handleSingOut}
               >
                 Выход
               </NavLink>
             </li>
-            <li className={`${style.item}`}>
-              <p className={`${style.text} text text_type_main-default text_color_inactive pt-20 pb-4`}>
+            <li className={`${styles.item}`}>
+              <p className={`${styles.text} text text_type_main-default text_color_inactive pt-20 pb-4`}>
                 В этом разделе вы можете изменить свои персональные данные
               </p>
             </li>
@@ -90,7 +98,7 @@ const PageProfile: FC = () => {
           <Routes>
               <Route path="/orders" element={<Orders/>}/>
               <Route path="/" element={
-                <form className={style.form} onSubmit={onSubmit}>
+                <form className={styles.form} onSubmit={onSubmit}>
                   <Input
                     type={'text'}
                     placeholder={'Имя'}
@@ -124,7 +132,7 @@ const PageProfile: FC = () => {
                     errorText={'Ошибка'}
                     size={'default'}
                   />
-                  <div className={style.btn}>
+                  <div className={styles.btn}>
                     <Button htmlType="submit" type="secondary" size="medium" onClick={() => onResetForm}>
                       Oтмена
                     </Button>

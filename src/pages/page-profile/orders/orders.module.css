@@ -1,0 +1,23 @@
+.container {
+    height: 70vh;
+    min-height: 70%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    width: 100%;
+}
+
+.container::-webkit-scrollbar {
+    width: 8px;
+    height: auto;
+    background-color: #2f2f37;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background-color: #8585ad;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+}

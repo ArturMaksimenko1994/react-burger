@@ -1,26 +1,26 @@
 import {Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { setLoginFormValue, singIn } from '../../services/store/actions/auth';
 import { getCookie } from '../../utils/utils';
 
 import styles from './page-login.module.css';
 import {ChangeEvent, FC, FormEvent} from "react";
+// import { TLocation } from '../../services/types/data';
 
 const PageLogin: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  // const location = useLocation<TLocation>();
   const cookie = getCookie('token');
-  const { email, password } = useSelector((store: any) => store.authReducer.form);
+  const { email, password } = useSelector((store) => store.auth.form);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // @ts-ignore
     dispatch(setLoginFormValue(e.target.name, e.target.value));
   }
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(singIn(email, password));
   }
 
