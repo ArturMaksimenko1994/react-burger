@@ -1,46 +1,33 @@
-# Getting Started with Create React App
+## Учебный проект Stellar-Burgers
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Описание проекта**
 
-## Available Scripts
+Stellar-Burgers — учебный проект, созданный для изучения React, Redux и Drag and Drop функционала. Проект включает статическую верстку веб-страницы с функционалом, описанным ниже.
 
-In the project directory, you can run:
+Функционал:
+ * Redux
+    -Загрузка ингредиентов: Получение списка ингредиентов от API и их отображение в компоненте BurgerIngredients.
+    -Работа с модальными окнами: Добавление и удаление данных о просматриваемом ингредиенте в модальном окне IngredientDetails.
+    -Управление заказами: Получение и обновление номера заказа в модальном окне OrderDetails.
 
-### `npm start`
+ * DnD
+    -Конструктор бургера: Пользователь может добавлять ингредиенты из BurgerIngredients в компонент BurgerConstructor с помощью Drag and Drop.
+    -Управление ингредиентами: Возможность увеличивать счётчик ингредиентов при успешном перетаскивании, а также удалять и изменять порядок ингредиентов в BurgerConstructor.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* React-Router
+    -Аутентификация и авторизация: Включает регистрацию пользователей, обновление токена, выход из системы и защищённые маршруты в приложении.
+    -Управление пользователями: Получение и обновление информации о пользователе, используя куки для сохранения сессий.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+___
+## Использованные технологии
 
-### `npm test`
+    -Языки и инструменты: HTML, CSS, React (с использованием JSX и модульного подхода), TypeScript.
+    -Библиотеки: Redux для управления состоянием, библиотека компонентов @ya.praktikum/react-developer-burger-ui-components.
+    -Другие технологии: Drag and Drop функционал, использующийся для удобства пользователя при создании бургеров.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+___
+## Макет
 
-### `npm run build`
+* [Ссылка на макет в Figma Месяц-1/Месяц-2/Месяц-3](https://www.figma.com/file/ocw9a6hNGeAejl4F3G9fp8/React-_-%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8-(3-%D0%BC%D0%B5%D1%81%D1%8F%D1%86%D0%B0)_external_link?node-id=0%3A1)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+* [Ссылка на страницу проекта github](https://ArturMaksimenko1994.github.io/react-burger/)

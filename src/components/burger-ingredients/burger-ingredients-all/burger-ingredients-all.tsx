@@ -24,7 +24,10 @@ const BurgerIngredientsAll: FC<TBurgerIngredientsAll>= ({ type, ingredients }) =
   return (
     <div className={`${styles['group-ingredients']}`} id={type}>
       <h2 className="text text_type_main-medium">{categories[type]}</h2>
-      <ul className={`${styles['list']}`}>
+      <ul 
+      className={`${styles['list']}`}
+      data-testid="list-ingredients-all"
+      >
         {category?.map((elem) => (
           <BurgerIngridientItem key={elem._id} ingredient={elem} />
         ))}

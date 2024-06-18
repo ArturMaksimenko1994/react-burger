@@ -27,8 +27,8 @@ import {
   UPDATE_TOKEN_REQUEST,
   UPDATE_TOKEN_SUCCESS
 } from "../action-types";
-import { TAuthActions } from "../actions/auth";
-import { TUser } from "../../types/data";
+import {TAuthActions} from "../actions/auth";
+import {TUser} from "../../types/data";
 
 type AuthInitialState = {
   message: string;
@@ -107,7 +107,7 @@ const initialState: AuthInitialState = {
   updateTokenFailed: false,
 };
 
-export const authReducer  = (
+export const authReducer = (
   state = initialState,
   action: TAuthActions)
   : AuthInitialState => {
