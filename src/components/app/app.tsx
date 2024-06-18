@@ -79,7 +79,9 @@ const App: FC = () => {
       <AppHeader/>
       <main className={`${style.main} pt-10`}>
         <Routes location={background || location}>
+          
           <Route path="/" element={<PageBurger/>}/>
+          <Route path="/react-burger" element={<PageBurger/>}/>
           <Route path="/login" element={<PageLogin/>}/>
           <Route path="/register" element={<PageRegister/>}/>
 
