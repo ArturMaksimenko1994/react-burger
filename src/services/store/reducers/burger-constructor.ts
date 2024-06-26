@@ -4,16 +4,16 @@ import {
   DELETE_ITEM,
   MOVE_ITEM,
   RESET_ITEM
-} from "../action-types";
-import { TBurgerConstructorActions } from "../actions/burger-constructor";
-import { TIngredient } from "../../types/data";
+} from '../action-types';
+import { TBurgerConstructorActions } from '../actions/burger-constructor';
+import { TIngredient } from '../../types/data';
 
 export type TInitialState = {
   items: TIngredient[];
   bun: TIngredient;
   itemsId: string[];
   bunRequestSuccess: boolean;
-}
+};
 
 const initialState: TInitialState = {
   items: [],
@@ -27,7 +27,7 @@ const initialState: TInitialState = {
     name: '',
     price: 0,
     proteins: 0,
-    type: "bun",
+    type: 'bun',
     __v: 0,
     _id: '',
     id: '',
@@ -39,8 +39,8 @@ const initialState: TInitialState = {
 
 export const constructorReducer = (
   state = initialState,
-  action: TBurgerConstructorActions)
-  : TInitialState => {
+  action: TBurgerConstructorActions
+): TInitialState => {
   switch (action.type) {
     case DELETE_ITEM: {
       return {
@@ -64,7 +64,7 @@ export const constructorReducer = (
       return {
         ...state,
         items: [...state.items, action.data],
-        itemsId: [...state.itemsId, action.data._id]
+        itemsId: [...state.itemsId, action.data._id],
       };
     }
     case RESET_ITEM: {
@@ -72,7 +72,8 @@ export const constructorReducer = (
         ...state,
         items: [],
         bun: initialState.bun,
-        bunRequestSuccess: false
+        bunRequestSuccess: false,
+        itemsId: [],
       };
     }
     case MOVE_ITEM: {
@@ -85,7 +86,7 @@ export const constructorReducer = (
 
       return {
         ...state,
-        items: dragConstructor
+        items: dragConstructor,
       };
     }
     default: {

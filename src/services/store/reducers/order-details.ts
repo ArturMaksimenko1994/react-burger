@@ -3,8 +3,8 @@ import {
   ORDER_DETAILS_FAILED,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS
-} from "../action-types";
-import { TOrderDetailsActions } from "../actions/order-details";
+} from '../action-types';
+import { TOrderDetailsActions } from '../actions/order-details';
 
 export type TOrderInitialState = {
   orderDetailsFailed: boolean;
@@ -12,7 +12,7 @@ export type TOrderInitialState = {
   orderDetailsRequest: boolean;
 }
 
-const orderInitialState: TOrderInitialState = {
+export const orderInitialState: TOrderInitialState = {
   orderDetailsFailed: false,
   number: null,
   orderDetailsRequest: false
@@ -20,8 +20,8 @@ const orderInitialState: TOrderInitialState = {
 
 export const orderReducer = (
   state = orderInitialState,
-  action: TOrderDetailsActions)
-  : TOrderInitialState => {
+  action: TOrderDetailsActions
+): TOrderInitialState => {
   switch (action.type) {
     case ORDER_DETAILS_REQUEST: {
       return {
@@ -49,7 +49,8 @@ export const orderReducer = (
       return {
         ...state,
         number: null,
-
+        orderDetailsFailed: false,
+        orderDetailsRequest: false
       };
     }
     default: {

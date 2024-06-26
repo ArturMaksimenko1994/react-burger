@@ -53,6 +53,7 @@ const BurgerIngridientItem: FC<TBurgerIngridientItem> = ({ingredient}) => {
         <Link to={`/ingredients/${ingredient._id}`} state={{background: location}}
               onClick={() => handleOpenIngredientDetailsModal(ingredient)}
               className={`${styles['list-item-link']}`}
+              data-testid={`burger-ingredient-${ingredient._id}`} // Добавляем data-testid
         >
           {counter() > 0 && <Counter count={counter()} size="default"/>}
           <img className={styles.img} src={ingredient.image} alt={ingredient.name}/>
